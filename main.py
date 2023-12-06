@@ -33,12 +33,12 @@ def create_item(db_item: ItemPydantic):
     return db_item
 
 
-def get_items():
+def get_item():
     result = []
     with SessionLocal() as db:
         items = db.query(Item).all()
         for item in items:
-            result.append({'name': item.string, 'description': item.description, 'price': item.price})
+            result.append({'id': item.id , 'name': item.string, 'description': item.description, 'price': item.price})
     return result
 
 
@@ -48,13 +48,21 @@ def retrieve_item(item_id):
     return {'name': retrieved_item.string, 'description': retrieved_item.description, 'price': retrieved_item.price}
 
 
-def update_item(item_id, n_name, n_desc, n_price):
-    with SessionLocal() as db:
-        db.query(Item).filter_by(id=item_id).update({'string': n_name, 'description': n_desc, 'price': n_price})
-        db.commit()
-        updated_item = db.query(Item).filter_by(id=item_id).first()
-    return {'name': updated_item.string, 'description': updated_item.description, 'price': updated_item.price}
+# def update_item(item_id, n_name, n_desc, n_price):
+#     with SessionLocal() as db:
+#         db.query(Item).filter_by(id=item_id).update({'string': n_name, 'description': n_desc, 'price': n_price})
+#         db.commit()
+#         updated_item = db.query(Item).filter_by(id=item_id).first()
+#     return {'id': updated_item.id, 'name': updated_item.string, 'description': updated_item.description, 'price': updated_item.price}
 
+def update_item(item_id,item):
+    with SessionLocal() as db:
+        db_item = db.query(Item).filter(Item.id ==item_id).first()
+        for field,value in item.items():
+            setattr(db_item,field,value)
+        db.commit()
+        db.refresh(db_item)
+        return db_item
 
 def delete_item(item_id):
     with SessionLocal() as db:
@@ -68,19 +76,18 @@ def delete_item(item_id):
 
 
 # Создание товара
-create_item(db_item)
+# create_item(db_item)
 
 # Обновление товара
-update_item(2, 'Карандаш', 'Красный карандаш', 30)
-
+# print(update_item(5, 'Карандаш', 'Красны monster', 30))
 # Удаление товара
 # del_item = delete_item(3)
 # print(del_item)
-
 # Получение и вывод всех товаров
-print(get_items())
-
+# print(get_items())
 
 # retrive - searching on id
 # update
 # delete
+
+

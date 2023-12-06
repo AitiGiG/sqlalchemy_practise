@@ -4,5 +4,9 @@
  - python3 -m venv myvenv
 2. Второй шаг - надо активировать это пространство
  - ./venv/bin/activate
-3. Третий шаг - надо теперь сказать все зависимости из файла "requirements.txt"
- - pip install -r requirements.txt
+3. Третий шаг - надо теперь сказать все зависимости из файла "requirements.txt" 
+
+    ``` pip install -r requirements.txt ``` 
+
+4. Четвёртый шаг - добавил flusk его надо установить прошлой командой вся его логика по CRUD лежит в файле server_run.py
+
